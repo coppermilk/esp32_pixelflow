@@ -3,8 +3,8 @@
 
 class GoogleSheetsDownloader: public AbstractDownloaderData{
   private:
-  String GOOGLE_SCRIPT_ID;
+  String deployment_id;
   public:
-  explicit GoogleSheetsDownloader(String);
+  explicit GoogleSheetsDownloader(const String &deployment_id);
   String get_coma_separated_values() override;
 };

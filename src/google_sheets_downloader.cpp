@@ -2,13 +2,13 @@
 
 #include <HTTPClient.h>
 #include "google_sheets_downloader.h"
-GoogleSheetsDownloader::GoogleSheetsDownloader(String GOOGLE_SCRIPT_ID){
-  this->GOOGLE_SCRIPT_ID = GOOGLE_SCRIPT_ID;
+GoogleSheetsDownloader::GoogleSheetsDownloader(const String &deployment_id){
+  this->deployment_id = deployment_id;
 }
 
-String get_coma_separated_values::downloadData() {
+String GoogleSheetsDownloader::get_coma_separated_values() {
   HTTPClient http;
-  String url = "https://script.google.com/macros/s/" + GOOGLE_SCRIPT_ID + "/exec?read";
+  String url = "https://script.google.com/macros/s/" + deployment_id + "/exec?read";
   Serial.println("Reading Data From Google Sheet.....");
   http.begin(url.c_str());
   //Removes the error "302 Moved Temporarily Error"

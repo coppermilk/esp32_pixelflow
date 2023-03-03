@@ -10,6 +10,7 @@ String GoogleSheetsDownloader::get_coma_separated_values() {
   HTTPClient http;
   String url = "https://script.google.com/macros/s/" + deployment_id + "/exec?read";
   Serial.println("Reading Data From Google Sheet.....");
+  
   http.begin(url.c_str());
   //Removes the error "302 Moved Temporarily Error"
   http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
@@ -26,7 +27,6 @@ String GoogleSheetsDownloader::get_coma_separated_values() {
   } else if (httpCode == 200) {
     payload = http.getString();
   }
-  //-------------------------------------------------------------------------------------
   http.end();
   return payload;
 }

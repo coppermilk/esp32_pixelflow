@@ -1,6 +1,6 @@
+#pragma once
 #include "google_sheets_downloader.h"
-
-unsigned* GoogleSheetsDownloader::downloadData(unsigned array_size) {
-  unsigned* p;
-  return p;
+String GoogleSheetsDownloader::downloadData() {
+  String k = "abc";
+  return k;
 }

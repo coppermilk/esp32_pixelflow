@@ -1,6 +1,8 @@
+#pragma once
 #include "abstract_downloader_data.h"
+#include "Arduino.h"
 
 class GoogleSheetsDownloader: public AbstractDownloaderData{
   public:
-  unsigned * downloadData(unsigned array_size) override;
+  String downloadData() override;
 };

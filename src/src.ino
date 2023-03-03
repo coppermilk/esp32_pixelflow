@@ -1,4 +1,5 @@
 #include "google_sheets_downloader.h"
+#include "math_pixelflow.h"
 
 #include <WiFi.h>
 #include <Adafruit_NeoMatrix.h>

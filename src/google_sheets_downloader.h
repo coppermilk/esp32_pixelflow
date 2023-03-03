@@ -1,8 +1,10 @@
 #pragma once
 #include "abstract_downloader_data.h"
-#include "Arduino.h"
 
 class GoogleSheetsDownloader: public AbstractDownloaderData{
+  private:
+  String GOOGLE_SCRIPT_ID;
   public:
-  String downloadData() override;
+  explicit GoogleSheetsDownloader(String);
+  String get_coma_separated_values() override;
 };

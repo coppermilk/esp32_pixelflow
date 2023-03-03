@@ -3,5 +3,5 @@
 class AbstractDownloaderData{
   public:
   virtual ~AbstractDownloaderData() = default;
-  String downloadData();
+  virtual String get_coma_separated_values();
 };

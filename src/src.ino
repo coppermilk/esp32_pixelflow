@@ -1,7 +1,9 @@
 #include "google_sheets_downloader.h"
 #include "math_pixelflow.h"
+#include "NTPClient.h"
 
 #include <WiFi.h>
+#include <WiFiUdp.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -20,11 +22,21 @@ void setup() {
   // put your setup code here, to run once:
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  Serial.begin(9600);
+    while ( WiFi.status() != WL_CONNECTED ) {
+    delay ( 500 );
+    Serial.print ( "." );
+  }
+
+  Serial.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  static WiFiUDP ntpUDP;
+  static NTPClient timeClient(ntpUDP);
+  timeClient.begin();
+  timeClient.update();
+  Serial.println(timeClient.getEpochTime());
 
   GoogleSheetsDownloader gsd("AKfycby3UlTUPrPIuYRvhh-Uo2yePrEQAUrEOp3AdzdNEQlkuhISJ4SUmqh1wcs7zftA3LiM");
   Serial.println(gsd.get_coma_separated_values());

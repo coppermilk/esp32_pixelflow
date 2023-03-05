@@ -2,6 +2,7 @@
 #include "math_pixelflow.h"
 #include "NTPClient.h"
 
+#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <Adafruit_NeoMatrix.h>
@@ -22,12 +23,38 @@ void setup() {
   // put your setup code here, to run once:
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-    while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
 
   Serial.begin(115200);
+}
+
+void parse(const String& json) {
+  DynamicJsonDocument doc(25000);
+  DeserializationError error = deserializeJson(doc, json);
+
+  // Test if parsing succeeds.
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    return;
+  }
+  const char* name = doc["name"];
+  Serial.println(name);
+  unsigned long long time;
+  int level;
+
+  for (unsigned i = 0;; ++i) {
+    time = doc["list"][i]["time"];
+    level = doc["list"][i]["level"];
+    Serial.println(time);
+    Serial.println(level);
+    if (!time && !level) {
+      break;
+    }
+  }
 }
 
 void loop() {
@@ -37,8 +64,12 @@ void loop() {
   timeClient.begin();
   timeClient.update();
   Serial.println(timeClient.getEpochTime());
+  Serial.println(timeClient.getDay());
 
-  GoogleSheetsDownloader gsd("AKfycby3UlTUPrPIuYRvhh-Uo2yePrEQAUrEOp3AdzdNEQlkuhISJ4SUmqh1wcs7zftA3LiM");
-  Serial.println(gsd.get_coma_separated_values());
+
+  GoogleSheetsDownloader gsd("AKfycbxwr4vTb5GeNAJODuxDX57HWeHpwO4hAPuheZaXSAdN9LFb8P1V97U3oz-vnzfcgf3O");
+  String str = gsd.get_coma_separated_values();
+  Serial.println(str);
+  parse(str);
   delay(100000000);
 }

@@ -1,8 +1,9 @@
 #include "google_sheets_downloader.h"
 #include "math_pixelflow.h"
 #include "NTPClient.h"
+#include "calendar_activity.h"
 
-#include <ArduinoJson.h>
+//#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <Adafruit_NeoMatrix.h>
@@ -30,9 +31,9 @@ void setup() {
 
   Serial.begin(115200);
 }
-
+/*
 void parse(const String& json) {
-  DynamicJsonDocument doc(25000);
+  DynamicJsonDocument doc(20000);
   DeserializationError error = deserializeJson(doc, json);
 
   // Test if parsing succeeds.
@@ -56,7 +57,7 @@ void parse(const String& json) {
     }
   }
 }
-
+*/
 void loop() {
   // put your main code here, to run repeatedly:
   static WiFiUDP ntpUDP;
@@ -66,10 +67,12 @@ void loop() {
   Serial.println(timeClient.getEpochTime());
   Serial.println(timeClient.getDay());
 
-
   GoogleSheetsDownloader gsd("AKfycbxwr4vTb5GeNAJODuxDX57HWeHpwO4hAPuheZaXSAdN9LFb8P1V97U3oz-vnzfcgf3O");
-  String str = gsd.get_coma_separated_values();
-  Serial.println(str);
-  parse(str);
-  delay(100000000);
+  String json = gsd.get_json();
+  Serial.println(json);
+  
+  CalendarActivity ca(json, timeClient.getEpochTime(), 7, 32);
+
+  //parse(str);
+  delay(100000);
 }

@@ -7,7 +7,7 @@ GoogleSheetsDownloader::GoogleSheetsDownloader(const String &deployment_id){
   this->deployment_id = deployment_id;
 }
 
-String GoogleSheetsDownloader::get_coma_separated_values() {
+String GoogleSheetsDownloader::get_json() {
   HTTPClient http;
   String url = "https://script.google.com/macros/s/" + deployment_id + "/exec?read";
  

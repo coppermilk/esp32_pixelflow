@@ -3,5 +3,5 @@
 class AbstractDownloaderData {
 public:
   virtual ~AbstractDownloaderData() = default;
-  virtual String get_coma_separated_values();
+  virtual String get_json();
 };

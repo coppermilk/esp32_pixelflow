@@ -6,5 +6,5 @@ private:
   String deployment_id;
 public:
   explicit GoogleSheetsDownloader(const String &deployment_id);
-  String get_coma_separated_values() override;
+  String get_json() override;
 };

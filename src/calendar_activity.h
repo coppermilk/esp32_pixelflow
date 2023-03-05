@@ -3,6 +3,7 @@
 #include "pixel.h"
 #include "Arduino.h"
 #include <ArduinoJson.h>
+#include <Adafruit_NeoMatrix.h>
 #include <vector>
 #include <map>
 
@@ -17,7 +18,7 @@ private:
   unsigned COLS;
 
   unsigned long long today;
-
+  Adafruit_NeoMatrix *pMatrix;
   String name_this_activity;
   std::map<unsigned long long, int> calendar_vith_values;
 
@@ -28,7 +29,7 @@ private:
   unsigned long long get_weekday(unsigned long long day);
 
 public:
-  CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols);
+  CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix);
 
   void show();
   void begin() override;

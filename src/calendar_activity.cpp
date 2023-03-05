@@ -2,7 +2,7 @@
 
 unsigned long long CalendarActivity::remove_hour_min_sec(unsigned long long time)
 {
-	return (time / 86400ULL) * 86400ULL;
+	return (time / 86400L) * 86400L;
 }
 
 void CalendarActivity::fill_calendarDEBUG()
@@ -11,18 +11,19 @@ void CalendarActivity::fill_calendarDEBUG()
 	unsigned long long offset = 6 - get_weekday(today);
 
 	for (int i = 0; i < (COLS * ROWS - offset); ++i) {
-		calendar_vith_values[today - (i * 86400ULL)] = i + 1;;
+		calendar_vith_values[today - (i * 86400L)] = i + 1;;
 	}
 }
 
 unsigned long long CalendarActivity::get_weekday(unsigned long long day)
 {
-	return (((today / 86400ULL) + 4) % 7); //0 is Sunday
+	return (((today / 86400L) + 4) % 7); //0 is Sunday
 }
 
-CalendarActivity::CalendarActivity( String &json, unsigned long long time, unsigned rows, unsigned cols)
+CalendarActivity::CalendarActivity( String &json, unsigned long long time, unsigned rows, unsigned cols,  Adafruit_NeoMatrix *pMatrix)
 {
 
+  this->pMatrix = pMatrix;
 	min_pixel = Pixel(0, 0, 0);
 	max_pixel = Pixel(255, 255, 255);
 
@@ -30,14 +31,14 @@ CalendarActivity::CalendarActivity( String &json, unsigned long long time, unsig
 	update(time);
 	set_cols(cols);
 	set_rows(rows);
-	fill_calendarDEBUG();
+	//fill_calendarDEBUG();
 }
 
 void CalendarActivity::show()
 {
 
 	const unsigned long long OFFSET_DAYS = 6 - get_weekday(today);
-	const unsigned long long last_comming_day = today + (86400ULL * OFFSET_DAYS);
+	const unsigned long long last_comming_day = today + (86400L * OFFSET_DAYS);
 
 
 	// Min values in calendar range.
@@ -47,20 +48,26 @@ void CalendarActivity::show()
 	for (unsigned row = 0; row < ROWS; ++row) {
 		for (unsigned col = 0; col < COLS; ++col) {
 			int index = ROWS * (COLS - col) - row - 1;
-			int value =  calendar_vith_values[last_comming_day - (86400ULL * index)];
+			int value =  calendar_vith_values[last_comming_day - (86400L * index)];
 			max_value = (value > max_value) ? value : max_value;
 			min_value = (value < min_value) ? value : min_value;
 		}
 	}
 
+pMatrix->fillScreen(0);
 	for (unsigned row = 0; row < ROWS; ++row) {
 		for (unsigned col = 0; col < COLS; ++col) {
 			int index = ROWS * (COLS - col) - row - 1;
       Serial.print("(" + String(col) + ":" + String(row) + ")");
-			Serial.print(calendar_vith_values[last_comming_day - (86400ULL * index)]);
+			Serial.print(calendar_vith_values[last_comming_day - (86400L * index)]);
+      int k = calendar_vith_values[last_comming_day - (86400L * index)];
+      if(k){
+      pMatrix->drawPixel(col, row, pMatrix->Color(200, 200, 200));
+      }
 		}
 		Serial.println();
 	}
+  pMatrix->show();
 }
 
 
@@ -130,7 +137,7 @@ void CalendarActivity::update(String &json)
 
   unsigned long long time;
   int level;
-  
+
   for (unsigned i = 0;; ++i) {
     time = doc["list"][i]["time"];
     level = doc["list"][i]["level"];

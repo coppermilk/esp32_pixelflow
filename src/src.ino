@@ -24,6 +24,8 @@ void setup() {
   // put your setup code here, to run once:
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
+  matrix.begin();
+  matrix.setBrightness(20);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -58,6 +60,27 @@ void parse(const String& json) {
   }
 }
 */
+/*
+int x    = matrix.width();
+int pass = 0;
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
+void loop() {
+  matrix.fillScreen(0);
+  auto pMatrix = &matrix;
+  matrix.setCursor(x, 0);
+  matrix.print(F("Howdy"));
+  if(--x < -36) {
+    x = matrix.width();
+    if(++pass >= 3) pass = 0;
+    matrix.setTextColor(colors[pass]);
+  }
+  matrix.show();
+  delay(100);
+}
+
+*/
+
 void loop() {
   // put your main code here, to run repeatedly:
   static WiFiUDP ntpUDP;
@@ -66,12 +89,13 @@ void loop() {
   timeClient.update();
   Serial.println(timeClient.getEpochTime());
   Serial.println(timeClient.getDay());
-
+ matrix.drawPixel(4, 4, matrix.Color(200, 200, 200));
   GoogleSheetsDownloader gsd("AKfycbxwr4vTb5GeNAJODuxDX57HWeHpwO4hAPuheZaXSAdN9LFb8P1V97U3oz-vnzfcgf3O");
   String json = gsd.get_json();
   Serial.println(json);
-  
-  CalendarActivity ca(json, timeClient.getEpochTime(), 7, 32);
+
+  CalendarActivity ca(json, timeClient.getEpochTime(), 7, 32, &matrix);
+  ca.show();
 
   //parse(str);
   delay(100000);

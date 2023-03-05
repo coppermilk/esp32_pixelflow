@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-03-03T20:39:32.358Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="4LVz-8K6xwk-uhgw4h5E" version="21.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-05T00:07:58.459Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="W2jRF4Yh9QN3j46NFF0x" version="21.0.2" type="github">
   <diagram name="Страница 1" id="qSKyALommbcV9Hr9bnK2">
     <mxGraphModel dx="1194" dy="726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -20,7 +20,7 @@
           <mxGeometry y="26" width="240" height="34" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-34" value="Pixel" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;shadow=0;arcSize=0;" parent="1" vertex="1">
-          <mxGeometry x="634" y="620" width="110" height="90" as="geometry" />
+          <mxGeometry x="660" y="570" width="110" height="90" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-35" value="+ r :&amp;nbsp;uint8_t&lt;br&gt;+ g :&amp;nbsp;uint8_t&lt;br&gt;+ b :&amp;nbsp;uint8_t" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="8cvvy75W_X1OJA95X1FM-34" vertex="1">
           <mxGeometry y="26" width="110" height="64" as="geometry" />
@@ -29,7 +29,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-37" value="BoardBehavior" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;shadow=0;arcSize=0;" parent="1" vertex="1">
-          <mxGeometry x="439" y="440" width="110" height="70" as="geometry" />
+          <mxGeometry x="465" y="390" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-38" value="+ run() : void&lt;br&gt;+ stop(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="8cvvy75W_X1OJA95X1FM-37" vertex="1">
           <mxGeometry y="26" width="110" height="44" as="geometry" />
@@ -41,7 +41,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-40" value="CalendarActivity" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;shadow=0;arcSize=0;" parent="1" vertex="1">
-          <mxGeometry x="414" y="580" width="160" height="170" as="geometry" />
+          <mxGeometry x="440" y="530" width="160" height="170" as="geometry" />
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-41" value="- max_pixel : Pixel&lt;br&gt;- min_pixel : Pixel&lt;br&gt;- blink_pixel : Pixel&lt;br&gt;- pixel_matrix : Pixel[][]&lt;br&gt;- delay_time : int&lt;br&gt;+ run() : void&lt;br&gt;+ stop() : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="8cvvy75W_X1OJA95X1FM-40" vertex="1">
           <mxGeometry y="26" width="160" height="144" as="geometry" />
@@ -51,9 +51,21 @@
         </mxCell>
         <mxCell id="8cvvy75W_X1OJA95X1FM-43" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="8cvvy75W_X1OJA95X1FM-35" target="8cvvy75W_X1OJA95X1FM-41" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="424" y="550" as="sourcePoint" />
-            <mxPoint x="584" y="550" as="targetPoint" />
+            <mxPoint x="450" y="500" as="sourcePoint" />
+            <mxPoint x="610" y="500" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="dSpknqhoTatChnrateFY-1" value="CalendarActivity" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;shadow=0;arcSize=0;" vertex="1" parent="1">
+          <mxGeometry x="230" y="730" width="160" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="dSpknqhoTatChnrateFY-2" value="- max_pixel : Pixel&lt;br&gt;- min_pixel : Pixel&lt;br&gt;- blink_pixel : Pixel&lt;br&gt;- pixel_matrix : Pixel[][]&lt;br&gt;- delay_time : int&lt;br&gt;+ run() : void&lt;br&gt;+ stop() : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="dSpknqhoTatChnrateFY-1">
+          <mxGeometry y="26" width="160" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="dSpknqhoTatChnrateFY-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="dSpknqhoTatChnrateFY-1" source="dSpknqhoTatChnrateFY-2" target="dSpknqhoTatChnrateFY-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dSpknqhoTatChnrateFY-4" value="1) посчитать офсет&lt;br&gt;2) добавить его&lt;br&gt;3) сгенерировать эталлонный мап с датами&lt;br&gt;4) По ключам эталлоного мапа добавить значения из предложенного.&amp;nbsp;&lt;br&gt;5) Из дополненного мапа сгенерировать массив пикселей." style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="490" y="770" width="270" height="200" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

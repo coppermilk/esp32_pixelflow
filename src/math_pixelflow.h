@@ -1,7 +1,7 @@
 #pragma once
+#include "pixel.h"
 
-template<typename T>
-T max(T* pArr, unsigned long long size);
-
-template<typename T>
-T min(T* pArr, unsigned long long size);
+class MathPixelFlow{
+public:
+  static Pixel map(int x, int in_min, int in_max, Pixel &out_min, Pixel &out_max);
+};

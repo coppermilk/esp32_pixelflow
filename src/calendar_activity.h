@@ -2,6 +2,7 @@
 #include "board_behavior.h"
 #include "pixel.h"
 #include "Arduino.h"
+#include "math_pixelflow.h"
 #include <ArduinoJson.h>
 #include <Adafruit_NeoMatrix.h>
 #include <vector>

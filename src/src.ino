@@ -26,7 +26,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   matrix.begin();
-  matrix.setBrightness(20);
+  matrix.setBrightness(15);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -44,20 +44,20 @@ void loop() {
   timeClient.update();
   Serial.println(timeClient.getEpochTime());
   Serial.println(timeClient.getDay());
- //matrix.drawPixel(4, 4, matrix.Color(57,211,83));
+  //matrix.drawPixel(4, 4, matrix.Color(57,211,83));
   GoogleSheetsDownloader gsd("AKfycbxwr4vTb5GeNAJODuxDX57HWeHpwO4hAPuheZaXSAdN9LFb8P1V97U3oz-vnzfcgf3O");
   String json = gsd.get_json();
   Serial.println(json);
-  CalendarActivity ca(json, timeClient.getEpochTime(), 7, 32, &matrix);
+  CalendarActivity ca(json, timeClient.getEpochTime(), 8, 32, &matrix);
   PreloaderActivity pa(&matrix);
   pa.show();
-  while(true){
-  ca.set_min_pixel(Pixel(14,68,41));
-  ca.set_max_pixel(Pixel(57,211,83));
-  ca.show();
-  delay(2000);
-  pa.show();
-}
+  while (true) {
+    ca.set_min_pixel(Pixel(14, 68, 41));
+    ca.set_max_pixel(Pixel(57, 211, 83));
+    ca.show();
+    //delay(2000);
+    pa.show();
+  }
 
   //parse(str);
   delay(1000);

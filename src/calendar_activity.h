@@ -17,17 +17,18 @@ private:
 
   unsigned ROWS;
   unsigned COLS;
+  unsigned DAYS_IN_WEEK;
 
   unsigned long long today;
   Adafruit_NeoMatrix *pMatrix;
   String name_this_activity;
   std::map<unsigned long long, int> calendar_vith_values;
-
   unsigned long long remove_hour_min_sec(unsigned long long time);
-
   void fill_calendarDEBUG();
 
-  unsigned long long get_weekday(unsigned long long day);
+  unsigned long long              get_weekday(unsigned long long day);
+  std::pair<int, int>             get_min_max_value();
+  std::vector<std::vector<Pixel>> get_frame();
 
 public:
   CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix);
@@ -39,10 +40,9 @@ public:
   void set_min_pixel(const Pixel& min_pixel);
   void set_max_pixel(const Pixel& max_pixel);
 
-  void set_rows(unsigned rows);
-  void set_cols(unsigned cols);
-
   void update(String &json, unsigned long long time);
   void update(String &json);
   void update(unsigned long long time);
 };
+
+

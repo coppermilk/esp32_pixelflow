@@ -1,3 +1,4 @@
+#include <utility>
 #include "calendar_activity.h"
 
 unsigned long long CalendarActivity::remove_hour_min_sec(unsigned long long time) {
@@ -26,60 +27,70 @@ CalendarActivity::CalendarActivity(String &json, unsigned long long time, unsign
 
   update(json);
   update(time);
-  set_cols(cols);
-  set_rows(rows);
+  //set_cols(cols);
+  //set_rows(rows);
+  ROWS = rows;
+  COLS = cols;
+  DAYS_IN_WEEK = 7;
   //fill_calendarDEBUG();
 }
 
-void CalendarActivity::show() {
+std::pair<int, int> CalendarActivity::get_min_max_value() {
 
   const unsigned long long OFFSET_DAYS = 6 - get_weekday(today);
   const unsigned long long last_comming_day = today + (86400L * OFFSET_DAYS);
 
+  //const unsigned DAYS_IN_WEEK = 7;
 
   // Min values in calendar range.
   int min_value = 0;
   int max_value = 0;
 
-  for (unsigned row = 0; row < ROWS; ++row) {
+  for (unsigned row = 0; row < DAYS_IN_WEEK; ++row) {
     for (unsigned col = 0; col < COLS; ++col) {
-      int index = ROWS * (COLS - col) - row - 1;
+      int index = DAYS_IN_WEEK * (COLS - col) - row - 1;
       int value = calendar_vith_values[last_comming_day - (86400L * index)];
       max_value = (value > max_value) ? value : max_value;
       min_value = (value < min_value) ? value : min_value;
     }
   }
+  return std::make_pair(min_value, max_value);
+}
 
-  std::vector<std::vector<Pixel>> v(ROWS, std::vector<Pixel>(COLS));
-  /******************/
-  	for (int i = 0; i < v.size(); ++i) {
-		for (int j = 0; j < v[i].size(); ++j) {
-			Serial.print((int)v[i][j].r);
-		}
-		Serial.println();
-	}
-  /*****************/
-
-
-  pMatrix->fillScreen(0);
-  for (unsigned row = 0; row < ROWS; ++row) {
-    for (unsigned col = 0; col < COLS; ++col) {
-      int index = ROWS * (COLS - col) - row - 1;
-      int values = calendar_vith_values[last_comming_day - (86400L * index)];
-      if (values) {
-        Pixel cur_pixel = MathPixelFlow::map(values, min_value, max_value, min_pixel, max_pixel);
-
-        pMatrix->drawPixel(col, row, pMatrix->Color(cur_pixel.r, cur_pixel.g, cur_pixel.b));
+void CalendarActivity::show() {
+  std::vector<std::vector<Pixel>>frame = get_frame();
+  for (int i = -ROWS; i <= 0; ++i) {
+    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, 0, i);
+    pMatrix->fillScreen(0);
+    for (unsigned row = 0; row < 8; ++row) {
+      for (unsigned col = 0; col < COLS; ++col) {
+        Pixel p = scrolled_frame[row][col];
+        pMatrix->drawPixel(col, row, pMatrix->Color(p.r, p.g, p.b));
       }
     }
+    pMatrix->show();
+    delay(100);
   }
-  pMatrix->show();
+
+  delay(2000);
+  for (int i = 0; i <= ROWS + 1; ++i) {
+    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, 0, i);
+    pMatrix->fillScreen(0);
+    for (unsigned row = 0; row < ROWS; ++row) {
+      for (unsigned col = 0; col < COLS; ++col) {
+        Pixel p = scrolled_frame[row][col];
+        pMatrix->drawPixel(col, row, pMatrix->Color(p.r, p.g, p.b));
+      }
+    }
+    pMatrix->show();
+    delay(100);
+  }
+
 }
 
 void CalendarActivity::begin() {
   show();
   if (!calendar_vith_values[today]) {
-    // set (get_day(today), cols);
   }
 }
 
@@ -95,13 +106,6 @@ void CalendarActivity::set_max_pixel(const Pixel &max_pixel) {
   this->max_pixel = max_pixel;
 }
 
-void CalendarActivity::set_rows(unsigned rows) {
-  ROWS = rows;
-}
-
-void CalendarActivity::set_cols(unsigned cols) {
-  COLS = cols;
-}
 
 void CalendarActivity::update(String &json, unsigned long long time) {
   update(json);
@@ -113,9 +117,8 @@ void CalendarActivity::update(unsigned long long time) {
 }
 
 void CalendarActivity::update(String &json) {
+
   calendar_vith_values.clear();
-
-
   DynamicJsonDocument doc(20000);
   DeserializationError error = deserializeJson(doc, json);
 
@@ -135,10 +138,48 @@ void CalendarActivity::update(String &json) {
     time = doc["list"][i]["time"];
     level = doc["list"][i]["level"];
     calendar_vith_values[time] = level;
-    //Serial.println(time);
-    //Serial.println(level);
     if (!time && !level) {
       break;
     }
   }
 }
+
+std::vector<std::vector<Pixel>> CalendarActivity::get_frame(){
+
+
+  // Fill callendar.
+  const unsigned long long OFFSET_DAYS = 6 - get_weekday(today);
+  const unsigned long long last_comming_day = today + (86400L * OFFSET_DAYS);
+
+  std::vector<std::vector<Pixel>> cur_frame(ROWS, std::vector<Pixel>(COLS));
+  std::pair<int, int> min_max = get_min_max_value();
+  for (unsigned row = 0; row < DAYS_IN_WEEK; ++row) {
+    for (unsigned col = 0; col < COLS; ++col) {
+      int index = DAYS_IN_WEEK * (COLS - col) - row - 1;
+      int values = calendar_vith_values[last_comming_day - (86400L * index)];
+      if (values) {
+        Pixel cur_pixel = MathPixelFlow::map(values, min_max.first, min_max.second, min_pixel, max_pixel);
+        cur_frame[row][col] = cur_pixel;
+      }
+    }
+  }
+
+  // Override frame.
+  typedef Pixel p;
+  Pixel image[8][8] = {p(80,80,80)   , p(24,24,24),    p(80,80,80)   , p(80,80,80)   , p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(80,80,80)   ,
+                       p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(80,80,80)   ,
+                       p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(80,80,80)   ,
+                       p(24,24,24),    p(24,24,24),    p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),    p(24,24,24),
+                       p(24,24,24),    p(172,94,84),   p(240,50,50) ,   p(172,94,84), p(172,94,84), p(240,50,50) ,   p(172,94,84), p(24,24,24),
+                       p(24,24,24),    p(172,94,84),   p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),
+                       p(80,80,80)   , p(24,24,24),    p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),    p(80,80,80)   ,
+                       p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(80,80,80)   , p(80,80,80)   };
+  for(int i = 0; i < 8; ++i){
+    for(int j = 0; j < 8; ++j){
+      cur_frame[i][j] = image[i][j];
+    }
+  }
+
+  return cur_frame;
+}
+

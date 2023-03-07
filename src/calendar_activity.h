@@ -7,7 +7,7 @@
 #include <Adafruit_NeoMatrix.h>
 #include <vector>
 #include <map>
-
+#include "image_db.h"
 
 class CalendarActivity : public BoardBehavior {
 private:
@@ -21,6 +21,7 @@ private:
 
   unsigned long long today;
   Adafruit_NeoMatrix *pMatrix;
+  image_db * pImageDB;
   String name_this_activity;
   std::map<unsigned long long, int> calendar_vith_values;
   unsigned long long remove_hour_min_sec(unsigned long long time);
@@ -31,7 +32,7 @@ private:
   std::vector<std::vector<Pixel>> get_frame();
 
 public:
-  CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix);
+  CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix, image_db * pImageDB);
 
   void show();
   void begin() override;

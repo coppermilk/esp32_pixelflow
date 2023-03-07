@@ -19,7 +19,7 @@ unsigned long long CalendarActivity::get_weekday(unsigned long long day) {
   return (((today / 86400L) + 4) % 7);  //0 is Sunday
 }
 
-CalendarActivity::CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix) {
+CalendarActivity::CalendarActivity(String &json, unsigned long long time, unsigned rows, unsigned cols, Adafruit_NeoMatrix *pMatrix, image_db * pImageDB) {
 
   this->pMatrix = pMatrix;
   min_pixel = Pixel(0, 0, 0);
@@ -32,6 +32,7 @@ CalendarActivity::CalendarActivity(String &json, unsigned long long time, unsign
   ROWS = rows;
   COLS = cols;
   DAYS_IN_WEEK = 7;
+  this->pImageDB = pImageDB;
   //fill_calendarDEBUG();
 }
 
@@ -59,8 +60,8 @@ std::pair<int, int> CalendarActivity::get_min_max_value() {
 
 void CalendarActivity::show() {
   std::vector<std::vector<Pixel>>frame = get_frame();
-  for (int i = -ROWS; i <= 0; ++i) {
-    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, 0, i);
+  for (int i = COLS; i >= 0; --i) {
+    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, i, 0);
     pMatrix->fillScreen(0);
     for (unsigned row = 0; row < 8; ++row) {
       for (unsigned col = 0; col < COLS; ++col) {
@@ -69,12 +70,15 @@ void CalendarActivity::show() {
       }
     }
     pMatrix->show();
-    delay(100);
+     if(i){
+        delay(60/((i > 0) ? i : -i));
+    }
+   
   }
 
-  delay(2000);
-  for (int i = 0; i <= ROWS + 1; ++i) {
-    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, 0, i);
+  delay(20000);
+  for (int i = 0; i >= -33; --i) {
+    std::vector<std::vector<Pixel>> scrolled_frame = MathPixelFlow::get_scroll_frame(frame, i,0);
     pMatrix->fillScreen(0);
     for (unsigned row = 0; row < ROWS; ++row) {
       for (unsigned col = 0; col < COLS; ++col) {
@@ -83,7 +87,9 @@ void CalendarActivity::show() {
       }
     }
     pMatrix->show();
-    delay(100);
+     if(i){
+        delay(60/((i > 0) ? i : -i));
+    }
   }
 
 }
@@ -165,20 +171,16 @@ std::vector<std::vector<Pixel>> CalendarActivity::get_frame(){
   }
 
   // Override frame.
-  typedef Pixel p;
-  Pixel image[8][8] = {p(80,80,80)   , p(24,24,24),    p(80,80,80)   , p(80,80,80)   , p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(80,80,80)   ,
-                       p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(80,80,80)   ,
-                       p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(80,80,80)   ,
-                       p(24,24,24),    p(24,24,24),    p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),    p(24,24,24),
-                       p(24,24,24),    p(172,94,84),   p(240,50,50) ,   p(172,94,84), p(172,94,84), p(240,50,50) ,   p(172,94,84), p(24,24,24),
-                       p(24,24,24),    p(172,94,84),   p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),
-                       p(80,80,80)   , p(24,24,24),    p(172,94,84), p(172,94,84), p(172,94,84), p(172,94,84), p(24,24,24),    p(80,80,80)   ,
-                       p(80,80,80)   , p(80,80,80)   , p(24,24,24),    p(24,24,24),    p(24,24,24),    p(24,24,24),    p(80,80,80)   , p(80,80,80)   };
-  for(int i = 0; i < 8; ++i){
-    for(int j = 0; j < 8; ++j){
-      cur_frame[i][j] = image[i][j];
+  std::vector<std::vector<unsigned>> image = pImageDB->get_image_by_name(name_this_activity);
+  if(!image.empty()){
+      for(int i = 0; i < 8; ++i){
+        for(int j = 0; j < 8; ++j){
+          cur_frame[i][j] = Pixel(image[i][j]);
+          Serial.println(image[i][j]);
+        }
     }
   }
+
 
   return cur_frame;
 }

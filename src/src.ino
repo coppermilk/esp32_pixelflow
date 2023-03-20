@@ -49,7 +49,7 @@ void loop() {
   //matrix.drawPixel(4, 4, matrix.Color(57,211,83));
   GoogleSheetsDownloader gsd("AKfycbxwr4vTb5GeNAJODuxDX57HWeHpwO4hAPuheZaXSAdN9LFb8P1V97U3oz-vnzfcgf3O");
   GoogleSheetsDownloader gsd_sport("AKfycbz4mHPeM4fJu_HjyQgOV_dQncK5MYYiFyC_H-FTu-VbT7yOd56a0y0DadWYJN96Wu9r");
-  GoogleSheetsDownloader gsd_sport_nata("AKfycbxmPtwNw48xyADxdyxU64oOu2TluhPGswboPmhQA2oTKE5PmMTb2f--8Bnua09x6Fjg");
+  GoogleSheetsDownloader gsd_sport_nata("AKfycby1XiG4EVRF5Vx-m6iw84u3CVMVDB44yhvdyNDfhn65aLmOHR1M2jUzufZW0HT_nWnE");
   GoogleSheetsDownloader gsd_duo("AKfycbzy04GbrBssUtUCCokoqWFWQkXiEhKQA1zryEAdxgjuCoUTX_BbTMzy2_mTy8ppt2y4");
   String json = gsd.get_json();
   String json2 = gsd_sport.get_json();
@@ -59,12 +59,12 @@ void loop() {
   Serial.println(json);
   Serial.println(json2);
   Serial.println(json3);
-Serial.println(json4);
+  Serial.println(json4);
 
-  CalendarActivity GitHub(json, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  CalendarActivity Sport(json2, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  CalendarActivity Duo(json3, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  CalendarActivity SportNata(json4, timeClient.getEpochTime(), 8, 32, &matrix, &db);
+  CalendarActivity GitHub(json, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
+  CalendarActivity Sport(json2, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
+  CalendarActivity Duo(json3, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
+  CalendarActivity SportNata(json4, timeClient.getEpochTime(), 8, 32, &matrix, &db); 
 
   PreloaderActivity pa(&matrix);
   pa.show();
@@ -74,7 +74,7 @@ Serial.println(json4);
     Sport.set_max_pixel(Pixel(0xf50017));
     Duo.set_min_pixel(Pixel(0xEB932F));
     Duo.set_max_pixel(Pixel(0xFAC03D));
-    SportNata.set_min_pixel(Pixel(0x36FFE9));
+    SportNata.set_min_pixel(Pixel(0x658A00));
     SportNata.set_max_pixel(Pixel(0xBBFF00));
 
   while (true) {

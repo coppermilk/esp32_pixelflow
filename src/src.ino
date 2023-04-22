@@ -69,11 +69,11 @@ void loop() {
   Serial.println(json4);
 
   CalendarActivity GitHub(json, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  delay(1000);
+  delay(10);
   CalendarActivity Sport(json2, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  delay(1000);
+  delay(10);
   CalendarActivity Duo(json3, timeClient.getEpochTime(), 8, 32, &matrix, &db);
-  delay(1000);
+  delay(10);
   CalendarActivity SportNata(json4, timeClient.getEpochTime(), 8, 32, &matrix, &db);
 
   PreloaderActivity pa(&matrix);
@@ -88,7 +88,7 @@ void loop() {
   SportNata.set_max_pixel(Pixel(0xBBFF00));
 
 
-  while (true) {
+  for(int j = 0; j < 10; j++) {
     pa.show();
     GitHub.show();
     SportNata.show();

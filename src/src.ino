@@ -27,6 +27,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   matrix.begin();
+  matrix.setTextWrap(false);
   matrix.setBrightness(20);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -35,6 +36,12 @@ void setup() {
 
   Serial.begin(115200);
 }
+
+int x = matrix.width();
+int pass = 0;
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255)
+};
 
 
 void loop() {
@@ -61,28 +68,45 @@ void loop() {
   Serial.println(json3);
   Serial.println(json4);
 
-  CalendarActivity GitHub(json, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
-  CalendarActivity Sport(json2, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
-  CalendarActivity Duo(json3, timeClient.getEpochTime(), 8, 32, &matrix, &db);  delay(1000);
-  CalendarActivity SportNata(json4, timeClient.getEpochTime(), 8, 32, &matrix, &db); 
+  CalendarActivity GitHub(json, timeClient.getEpochTime(), 8, 32, &matrix, &db);
+  delay(1000);
+  CalendarActivity Sport(json2, timeClient.getEpochTime(), 8, 32, &matrix, &db);
+  delay(1000);
+  CalendarActivity Duo(json3, timeClient.getEpochTime(), 8, 32, &matrix, &db);
+  delay(1000);
+  CalendarActivity SportNata(json4, timeClient.getEpochTime(), 8, 32, &matrix, &db);
 
   PreloaderActivity pa(&matrix);
   pa.show();
-    GitHub.set_min_pixel(Pixel(14, 68, 41));
-    GitHub.set_max_pixel(Pixel(57, 211, 83));
-    Sport.set_min_pixel(Pixel(68, 41, 14));
-    Sport.set_max_pixel(Pixel(0xf50017));
-    Duo.set_min_pixel(Pixel(0xEB932F));
-    Duo.set_max_pixel(Pixel(0xFAC03D));
-    SportNata.set_min_pixel(Pixel(0x658A00));
-    SportNata.set_max_pixel(Pixel(0xBBFF00));
+  GitHub.set_min_pixel(Pixel(14, 68, 41));
+  GitHub.set_max_pixel(Pixel(57, 211, 83));
+  Sport.set_min_pixel(Pixel(68, 41, 14));
+  Sport.set_max_pixel(Pixel(0xf50017));
+  Duo.set_min_pixel(Pixel(0xEB932F));
+  Duo.set_max_pixel(Pixel(0xFAC03D));
+  SportNata.set_min_pixel(Pixel(0x655A00));
+  SportNata.set_max_pixel(Pixel(0xBBFF00));
+
 
   while (true) {
     pa.show();
     GitHub.show();
     SportNata.show();
-    Sport.show();
-    Duo.show();
+     Sport.show();
+     Duo.show();
+    matrix.show();
+    for (int i = 0; i < 20000;i +=100) {
+      matrix.fillScreen(0);
+      matrix.setCursor(x, 0);
+      matrix.print(F("30 Days for research IT"));
+      if (--x < -150) {
+        x = matrix.width();
+        matrix.setTextColor(colors[0]);
+      }
+      Serial.println(x);
+      matrix.show();
+      delay(100);
+    }
   }
 
   //parse(str);

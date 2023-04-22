@@ -125,7 +125,7 @@ void CalendarActivity::update(unsigned long long time) {
 void CalendarActivity::update(String &json) {
 
   calendar_vith_values.clear();
-  DynamicJsonDocument doc(20000);
+  DynamicJsonDocument doc(23000);
   DeserializationError error = deserializeJson(doc, json);
 
   // Test if parsing succeeds.
